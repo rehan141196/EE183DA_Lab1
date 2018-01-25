@@ -4,7 +4,7 @@
 % values generated previosuly to determine which joint parameters give us
 % the desired final position
 
-finalpos = [0.42; -0.14; -0.18; 1];
+finalpos = [0.67; -0.3; -0.39; 1];
 k = keys(results2);
 val = values(results2);
 index = -1;
@@ -12,6 +12,7 @@ index = -1;
      lookup = round(results2(k{i}), 2);
      if lookup == finalpos
          index = k{i};
+         break;
      end
  end
  
