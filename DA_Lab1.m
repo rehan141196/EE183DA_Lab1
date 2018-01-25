@@ -1,58 +1,33 @@
 % FK IK Analysis Lab 1 - Human Leg
-
+% This is the program which generates all possible values of the end
+% effector given the range of joint parameters 
 
 clc;
 clear all;
 digits(4);
-L = 0.48;
+L = 0.48; % Average Length between hip and knee joint (in metres)
 basex = 0;
 basey = 0;
 basez = 0;
-% %FK
-% theta1 = 5;
-% theta2 = 5;
-% theta3 = 5;
-% theta4 = 5;
-% 
-% T01 = [cosd(theta1) -sind(theta1) 0 0; sind(theta1) cosd(theta1) 0 0; 0 0 1 0; 0 0 0 1];
-% T12 = [cosd(theta2) -sind(theta2) 0 0; 0 0 -1 0; sind(theta2) cosd(theta2) 0 0; 0 0 0 1];
-% T23 = [cosd(theta3) -sind(theta3) 0 0; 0 0 1 0; -sind(theta3) -cosd(theta3) 0 0; 0 0 0 1];
-% T34 = [cosd(theta4) -sind(theta4) 0 L; 0 0 -1 0; sind(theta4) cosd(theta4) 0 0; 0 0 0 1];
-% 
-% T04 = T01*T12*T23*T34;
-% 
-% base = [basex; basey; basez; 1];
-% 
-% endeffector = T04*base;
 
-theta1min = -10;
-theta1max = 10;
-theta2min = -10;
+
+theta1min = -15;
+theta1max = 30;
+theta2min = -35;
 theta2max = 10;
-theta3min = -10;
-theta3max = 10;
+theta3min = -15;
+theta3max = 30;
 theta4min = 0;
-theta4max = 10;
+theta4max = 45;
 
 results1 = containers.Map('KeyType','int32','ValueType','any');
 results2 = containers.Map('KeyType','int32','ValueType','any');
 
-% results1(0) = [1, 2, 3];
-% results2(0) = [4, 5, 6];
-% results1(1) = [3, 6, 9];
-% results2(1) = [0.1, 0.4, 0.5];
-% check = [0.1, 0.4, 0.5];
-% ans = 12345;
-% k = keys(results2);
-% val = values(results2);
-%  for i = 1:length(results1)
-%      if results2(k{i}) == check
-%          ans = k{i};
-%      end
-%  end
-% done = results1(ans)
-
 count = 0;
+maxx = 0;
+maxy = 0;
+maxz = 0;
+base = [basex; basey; basez; 1];
 for i=theta1min:theta1max
     for j = theta2min:theta2max
         for k = theta3min:theta3max
@@ -62,8 +37,10 @@ for i=theta1min:theta1max
                 T23 = [cosd(k) -sind(k) 0 0; 0 0 1 0; -sind(k) -cosd(k) 0 0; 0 0 0 1];
                 T34 = [cosd(l) -sind(l) 0 L; 0 0 -1 0; sind(l) cosd(l) 0 0; 0 0 0 1];
                 T04 = T01*T12*T23*T34;
-                base = [basex; basey; basez; 1];
                 endeffector = T04*base;
+                maxx = max(maxx, endeffector(1, 1));
+                maxy = max(maxy, endeffector(2, 1));
+                maxz = max(maxz, endeffector(3, 1));
                 results1(count) = [i; j; k; l];
                 results2(count) = round(endeffector,4);
                 count = count + 1;
@@ -71,18 +48,3 @@ for i=theta1min:theta1max
         end
     end
 end
-
-finalpos = [0.4709; 0.0832; 0.0417; 1];
-k = keys(results2);
-val = values(results2);
-index = -1;
-% multiples = {};
- for i = 1:length(results2)
-     lookup = round(results2(k{i}), 4);
-     if lookup == finalpos
-         index = k{i};
-%          multiples = [multiples, results1(index)];
-         break;
-     end
- end
-config = results1(index);
