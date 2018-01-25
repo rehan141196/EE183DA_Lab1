@@ -4,7 +4,6 @@
 
 clc;
 clear all;
-digits(4);
 L = 0.48; % Average Length between hip and knee joint (in metres)
 basex = 0;
 basey = 0;
@@ -38,9 +37,6 @@ for i=theta1min:theta1max
                 T34 = [cosd(l) -sind(l) 0 L; 0 0 -1 0; sind(l) cosd(l) 0 0; 0 0 0 1];
                 T04 = T01*T12*T23*T34;
                 endeffector = T04*base;
-                maxx = max(maxx, endeffector(1, 1));
-                maxy = max(maxy, endeffector(2, 1));
-                maxz = max(maxz, endeffector(3, 1));
                 results1(count) = [i; j; k; l];
                 results2(count) = round(endeffector,4);
                 count = count + 1;
