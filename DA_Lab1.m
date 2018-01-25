@@ -1,3 +1,6 @@
+% FK IK Analysis Lab 1 - Human Leg
+
+
 clc;
 clear all;
 digits(4);
